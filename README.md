@@ -1,2 +1,2 @@
 # selenium-testng-kit
-Web testing framework using Selenium  and TestNG
+Web testing framework using Selenium and TestNG
