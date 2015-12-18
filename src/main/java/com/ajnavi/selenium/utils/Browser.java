@@ -6,8 +6,10 @@ import com.ajnavi.selenium.annotations.WaitForTitleContains;
 import com.ajnavi.selenium.annotations.WaitForTitleIs;
 import com.ajnavi.selenium.annotations.WaitToBeVisible;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -16,6 +18,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
@@ -24,7 +28,19 @@ public final class Browser {
 
     private static int _RefCounter = 0;
 
-    private static RemoteWebDriver remoteWebDriver = null;
+    private static ThreadLocal<RemoteWebDriver> driverPerThread = new ThreadLocal<RemoteWebDriver>() {
+        @Override protected RemoteWebDriver initialValue()  {
+            return new FirefoxDriver ();
+        }
+
+        @Override public void remove() {
+            RemoteWebDriver driver = get();
+            super.remove();
+            driver.quit();
+        }
+    };
+
+    // private static RemoteWebDriver remoteWebDriver = null;
 
     // Default polling wait in milliseconds.
     private final static long DEFAULT_WAIT_SLEEP = WebDriverWait.DEFAULT_SLEEP_TIMEOUT;
@@ -40,7 +56,11 @@ public final class Browser {
 
     private static void initDriver() {
         Config config = Config.getInstance ();
-        remoteWebDriver = new FirefoxDriver ();
+        // remoteWebDriver = new FirefoxDriver ();
+    }
+
+    public static RemoteWebDriver getDriver() {
+        return driverPerThread.get();
     }
 
     public static void init (Map<String, String> settings) {
@@ -48,11 +68,13 @@ public final class Browser {
         if (_RefCounter == 1) {
             // Override properties from TestNG XML file.
             Config.init (settings);
-            initDriver ();
+            // initDriver ();
         }
     }
 
     public static void close () {
+        driverPerThread.remove();
+        /*
         if (remoteWebDriver != null) {
             --_RefCounter;
             if (_RefCounter == 0) {
@@ -60,10 +82,7 @@ public final class Browser {
                 remoteWebDriver = null;
             }
         }
-    }
-
-    public static RemoteWebDriver getDriver () {
-        return remoteWebDriver;
+        */
     }
 
     private static void processWaitToBeVisible (Field field, Object page, WebDriverWait webDriverWait) {
@@ -129,6 +148,8 @@ public final class Browser {
     }
 
     public static void load (String url) {
-        remoteWebDriver.get (url);
+    	logger.debug("Loading URL {}", url);
+        // remoteWebDriver.get (url);
+        Browser.getDriver().get(url);
     }
 }

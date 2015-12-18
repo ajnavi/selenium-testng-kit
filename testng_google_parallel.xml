@@ -1,0 +1,9 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="Google test Suite" parallel="methods" thread-count="2">
+  <test name="Google test">
+    <classes>
+     <class name="com.ajnavi.selenium.google.HomePageTest" />
+    </classes>
+  </test>
+</suite>

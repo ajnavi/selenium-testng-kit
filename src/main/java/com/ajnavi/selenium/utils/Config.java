@@ -22,6 +22,8 @@ public class Config extends Properties {
             logger.debug ("Creating Config instance.");
             // Load default properties.
             load (Config.class.getResourceAsStream ("/default.properties"));
+            logger.debug("Check if default property has url specified if running individual test.");
+            logger.debug("property value should not be specified in the double quote.");
             // Load override properties.
             // load (Config.class.getResourceAsStream ("/test.properties"));
             // Load property file in settings ("properties.file=property file").
@@ -43,7 +45,7 @@ public class Config extends Properties {
         }
     }
 
-    public static void init (Map<String, String> settings) {
+    public synchronized static void init (Map<String, String> settings) {
         if (instance == null)
             instance = new Config (settings);
         else
