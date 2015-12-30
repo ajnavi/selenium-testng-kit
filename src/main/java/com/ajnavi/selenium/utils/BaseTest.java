@@ -10,53 +10,53 @@ import org.testng.annotations.BeforeMethod;
 
 
 public abstract class BaseTest {
-    private void init (ITestContext context /*This is the way to get access to testng XML file*/) {
-        Browser.init (context.getSuite ().getXmlSuite ().getParameters ());
+    private void init(ITestContext context /*This is the way to get access to testng XML file*/) {
+        Browser.init(context.getSuite().getXmlSuite().getParameters());
     }
 
-    private void cleanup () {
-        Browser.close ();
+    private void cleanup() {
+        Browser.close();
     }
-
+/*
     @BeforeClass
-    public void initBeforeClass (ITestContext context) {
-    	 long id = Thread.currentThread().getId();
-         System.out.println("Before test-class. Thread id is: " + id);
-        init (context);
+    public void initBeforeClass(ITestContext context) {
+        long id = Thread.currentThread().getId();
+        System.out.println("BeforeClass - Thread id is: " + id);
+        init(context);
     }
 
     @AfterClass
-    public void cleanupAfterClass () {
-    	long id = Thread.currentThread().getId();
-        System.out.println("After test-class. Thread id is: " + id);
-        cleanup ();
+    public void cleanupAfterClass() {
+        long id = Thread.currentThread().getId();
+        System.out.println("AfterClass - Thread id is: " + id);
+        cleanup();
     }
 
     @BeforeSuite
-    public void initBeforeSuite (ITestContext context) {
+    public void initBeforeSuite(ITestContext context) {
         long id = Thread.currentThread().getId();
-        System.out.println("Before test-suite. Thread id is: " + id);
-        init (context);
+        System.out.println("BeforeSuite - Thread id is: " + id);
+        init(context);
     }
 
     @AfterSuite
-    public void cleanupAfterSuite () {
+    public void cleanupAfterSuite() {
         long id = Thread.currentThread().getId();
-        System.out.println("After test-suite. Thread id is: " + id);
-        cleanup ();
+        System.out.println("AfterSuite - Thread id is: " + id);
+        cleanup();
     }
-
+*/
     @BeforeMethod
-    public void initBeforeMethod (ITestContext context) {
+    public void initBeforeMethod(ITestContext context) {
         long id = Thread.currentThread().getId();
-        System.out.println("Before test-method. Thread id is: " + id);
-        init (context);
+        System.out.println("BeforeMethod - Thread id is: " + id);
+        init(context);
     }
 
     @AfterMethod
-    public void cleanupAfterMethod () {
+    public void cleanupAfterMethod() {
         long id = Thread.currentThread().getId();
-        System.out.println("After test-method. Thread id is: " + id);
-        cleanup ();
+        System.out.println("AfterMethod - Thread id is: " + id);
+        cleanup();
     }
 }

@@ -1,6 +1,6 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 
-<suite name="Google" verbose="1" thread-count="1">
+<suite name="Google" verbose="1" thread-count="1" >
 
     <parameter name="mobile.homepage.url" value="https://www.google.com/" />
 

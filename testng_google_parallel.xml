@@ -1,6 +1,10 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 
 <suite name="Google test Suite" parallel="methods" thread-count="2">
+
+    <parameter name="use.selenium.grid" value="false" />
+    <parameter name="selenium.grid.url" value="http://10.30.27.73:5555/wd/hub" />
+
   <test name="Google test">
     <classes>
      <class name="com.ajnavi.selenium.google.HomePageTest" />

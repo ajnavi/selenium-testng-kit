@@ -49,13 +49,29 @@ public class Config extends Properties {
         if (instance == null)
             instance = new Config (settings);
         else
-            logger.error ("Config object was already initialized.");
+            logger.debug ("Config object was already initialized.");
+    }
+
+    public int getInt (String name, int def) {
+        String val = getProperty (name);
+        if (val != null)
+            def = Integer.parseInt(val);
+
+        return def;
     }
 
     public long getLong (String name, long def) {
         String val = getProperty (name);
         if (val != null)
             def = Long.parseLong (val);
+
+        return def;
+    }
+
+    public boolean getBoolean (String name, boolean def) {
+        String val = getProperty (name);
+        if (val != null)
+            def = Boolean.parseBoolean(val);
 
         return def;
     }

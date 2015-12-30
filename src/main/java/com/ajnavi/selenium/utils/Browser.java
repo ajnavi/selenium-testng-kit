@@ -1,12 +1,11 @@
 package com.ajnavi.selenium.utils;
 
-import com.ajnavi.selenium.ui.AbstractPage;
 import com.ajnavi.selenium.annotations.WaitForH1;
 import com.ajnavi.selenium.annotations.WaitForTitleContains;
 import com.ajnavi.selenium.annotations.WaitForTitleIs;
 import com.ajnavi.selenium.annotations.WaitToBeVisible;
+import com.ajnavi.selenium.ui.AbstractPage;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -24,23 +23,98 @@ import java.util.List;
 import java.util.Map;
 
 public final class Browser {
-    private static Logger logger = LoggerFactory.getLogger (Browser.class);
 
-    private static int _RefCounter = 0;
+    private static class WebDriverManager {
+        private int _refCounter = 0;
+        private RemoteWebDriver _driver = null;
 
-    private static ThreadLocal<RemoteWebDriver> driverPerThread = new ThreadLocal<RemoteWebDriver>() {
-        @Override protected RemoteWebDriver initialValue()  {
-            return new FirefoxDriver ();
+        void init() {
+            ++_refCounter;
+            if (_refCounter == 1) {
+                System.out.println ("Initializing driver for thread " + Thread.currentThread().getId());
+                if (Config.getInstance().getBoolean("use.selenium.grid", false)) {
+                    // String nodeUrl = "http://10.30.27.73:5555/wd/hub";
+                    String nodeUrl = Config.getInstance().get("selenium.grid.url", null);
+                    DesiredCapabilities capability = DesiredCapabilities.firefox();
+                    capability.setBrowserName("firefox");
+                    try {
+                        _driver = new RemoteWebDriver(new URL(nodeUrl), capability);
+                    } catch (MalformedURLException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    _driver = new FirefoxDriver();
+                }
+            }
+        }
+
+        boolean close() {
+            --_refCounter;
+            if (_refCounter == 0) {
+                System.out.println ("Quitting driver for thread " + Thread.currentThread().getId());
+                _driver.quit();
+                _driver = null;
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        RemoteWebDriver get() {
+            return _driver;
+        }
+    }
+
+    private static ThreadLocal<WebDriverManager> driverPerThreadNew = new ThreadLocal<WebDriverManager>() {
+        @Override protected WebDriverManager initialValue()  {
+            return new WebDriverManager();
         }
 
         @Override public void remove() {
+            if (get().close())
+                super.remove();
+        }
+    };
+
+    public static synchronized void initNew(Map<String, String> settings) {
+        // Override properties from TestNG XML file.
+        Config.init(settings);
+        driverPerThreadNew.get().init();
+    }
+
+    public static synchronized void closeNew() {
+        driverPerThreadNew.remove();
+    }
+
+    private static Logger logger = LoggerFactory.getLogger (Browser.class);
+
+    private static ThreadLocal<RemoteWebDriver> driverPerThread = new ThreadLocal<RemoteWebDriver>() {
+        @Override protected RemoteWebDriver initialValue()  {
+            System.out.println ("Initializing driver for thread " + Thread.currentThread().getId());
+            RemoteWebDriver driver = null;
+            if (Config.getInstance().getBoolean("use.selenium.grid", false)) {
+                String nodeUrl = Config.getInstance().get("selenium.grid.url", null);
+                DesiredCapabilities capability = DesiredCapabilities.firefox();
+                capability.setBrowserName("firefox");
+                try {
+                    driver = new RemoteWebDriver(new URL(nodeUrl), capability);
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                driver = new FirefoxDriver();
+            }
+
+            return driver;
+        }
+
+        @Override public void remove() {
+            System.out.println ("Quitting driver for thread " + Thread.currentThread().getId());
             RemoteWebDriver driver = get();
             super.remove();
             driver.quit();
         }
     };
-
-    // private static RemoteWebDriver remoteWebDriver = null;
 
     // Default polling wait in milliseconds.
     private final static long DEFAULT_WAIT_SLEEP = WebDriverWait.DEFAULT_SLEEP_TIMEOUT;
@@ -54,35 +128,17 @@ public final class Browser {
                 Config.getInstance ().getLong ("mobile.waitSleepInMillis", DEFAULT_WAIT_SLEEP));
     }
 
-    private static void initDriver() {
-        Config config = Config.getInstance ();
-        // remoteWebDriver = new FirefoxDriver ();
-    }
-
     public static RemoteWebDriver getDriver() {
         return driverPerThread.get();
     }
 
-    public static void init (Map<String, String> settings) {
-        ++_RefCounter;
-        if (_RefCounter == 1) {
-            // Override properties from TestNG XML file.
-            Config.init (settings);
-            // initDriver ();
-        }
+    public static synchronized void init(Map<String, String> settings) {
+        // Override properties from TestNG XML file.
+        Config.init(settings);
     }
 
-    public static void close () {
+    public static synchronized void close () {
         driverPerThread.remove();
-        /*
-        if (remoteWebDriver != null) {
-            --_RefCounter;
-            if (_RefCounter == 0) {
-                remoteWebDriver.quit ();
-                remoteWebDriver = null;
-            }
-        }
-        */
     }
 
     private static void processWaitToBeVisible (Field field, Object page, WebDriverWait webDriverWait) {
