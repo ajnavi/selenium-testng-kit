@@ -46,10 +46,16 @@ public class Config extends Properties {
     }
 
     public synchronized static void init (Map<String, String> settings) {
-        if (instance == null)
-            instance = new Config (settings);
-        else
-            logger.debug ("Config object was already initialized.");
+        if (instance == null) {
+            logger.debug("Initializing Config object.");
+            instance = new Config(settings);
+        } else
+            logger.debug("Config object was already initialized.");
+    }
+
+    public synchronized static void destroy() {
+        logger.debug("Destroying Config object.");
+        instance = null;
     }
 
     public int getInt (String name, int def) {

@@ -19,8 +19,7 @@ import org.slf4j.LoggerFactory;
 import java.lang.reflect.Field;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public final class Browser {
 
@@ -88,7 +87,25 @@ public final class Browser {
 
     private static Logger logger = LoggerFactory.getLogger (Browser.class);
 
+    private static List<RemoteWebDriver> _drivers = new ArrayList<>();
+
+    private synchronized static void addDriver(RemoteWebDriver driver) {
+        _drivers.add(driver);
+    }
+
+    private synchronized static void removeDriver(RemoteWebDriver driver) {
+        _drivers.remove(driver);
+    }
+
+    private static synchronized void quitAllDrivers() {
+        for (RemoteWebDriver driver: _drivers) {
+            driver.quit();
+        }
+        _drivers.clear();
+    }
+
     private static ThreadLocal<RemoteWebDriver> driverPerThread = new ThreadLocal<RemoteWebDriver>() {
+
         @Override protected RemoteWebDriver initialValue()  {
             System.out.println ("Initializing driver for thread " + Thread.currentThread().getId());
             RemoteWebDriver driver = null;
@@ -105,12 +122,15 @@ public final class Browser {
                 driver = new FirefoxDriver();
             }
 
+            addDriver(driver);
+
             return driver;
         }
 
         @Override public void remove() {
             System.out.println ("Quitting driver for thread " + Thread.currentThread().getId());
             RemoteWebDriver driver = get();
+            removeDriver(driver);
             super.remove();
             driver.quit();
         }
@@ -138,7 +158,13 @@ public final class Browser {
     }
 
     public static synchronized void close () {
-        driverPerThread.remove();
+        if(! Config.getInstance().getBoolean("selenium.driver.per.thread", true))
+            driverPerThread.remove();
+    }
+
+    public static synchronized void closeAll() {
+        quitAllDrivers();
+        Config.destroy();
     }
 
     private static void processWaitToBeVisible (Field field, Object page, WebDriverWait webDriverWait) {

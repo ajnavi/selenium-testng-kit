@@ -1,14 +1,9 @@
 package com.ajnavi.selenium.utils;
 
 import org.testng.ITestContext;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.AfterSuite;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeSuite;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.*;
 
-
+@Listeners({com.ajnavi.selenium.utils.MySuiteListener.class, com.ajnavi.selenium.utils.MyTestListener.class})
 public abstract class BaseTest {
     private void init(ITestContext context /*This is the way to get access to testng XML file*/) {
         Browser.init(context.getSuite().getXmlSuite().getParameters());
