@@ -1,12 +1,12 @@
-package com.ajnavi.selenium.google;
+package com.qa.selenium.google;
 
-import com.ajnavi.selenium.utils.BaseTest;
+import com.qa.selenium.utils.BaseTest;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import com.ajnavi.selenium.google.ui.HomePage;
-import com.ajnavi.selenium.google.ui.SearchResultPage;
+import com.qa.selenium.google.ui.HomePage;
+import com.qa.selenium.google.ui.SearchResultPage;
 
 import java.lang.Exception;
 import java.util.List;

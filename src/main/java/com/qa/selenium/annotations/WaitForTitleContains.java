@@ -1,4 +1,4 @@
-package com.ajnavi.selenium.annotations;
+package com.qa.selenium.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,6 +7,6 @@ import java.lang.annotation.Target;
 
 @Retention (RetentionPolicy.RUNTIME)
 @Target (ElementType.TYPE)
-public @interface WaitForH1 {
-    String h1 ();
+public @interface WaitForTitleContains {
+    String contains ();
 }

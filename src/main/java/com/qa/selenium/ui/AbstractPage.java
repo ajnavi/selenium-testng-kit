@@ -1,6 +1,6 @@
-package com.ajnavi.selenium.ui;
+package com.qa.selenium.ui;
 
-import com.ajnavi.selenium.utils.Browser;
+import com.qa.selenium.utils.Browser;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.LoadableComponent;
 

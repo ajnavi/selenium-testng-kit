@@ -6,7 +6,7 @@
 
     <test name="HomePage">
         <classes>
-            <class name="com.ajnavi.selenium.google.HomePageTest"/>
+            <class name="com.qa.selenium.google.HomePageTest"/>
         </classes>
     </test>
 </suite>

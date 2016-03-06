@@ -1,10 +1,10 @@
-package com.ajnavi.selenium.utils;
+package com.qa.selenium.utils;
 
-import com.ajnavi.selenium.annotations.WaitForH1;
-import com.ajnavi.selenium.annotations.WaitForTitleContains;
-import com.ajnavi.selenium.annotations.WaitForTitleIs;
-import com.ajnavi.selenium.annotations.WaitToBeVisible;
-import com.ajnavi.selenium.ui.AbstractPage;
+import com.qa.selenium.annotations.WaitForH1;
+import com.qa.selenium.annotations.WaitForTitleContains;
+import com.qa.selenium.annotations.WaitForTitleIs;
+import com.qa.selenium.annotations.WaitToBeVisible;
+import com.qa.selenium.ui.AbstractPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
