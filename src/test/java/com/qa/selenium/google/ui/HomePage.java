@@ -1,10 +1,10 @@
-package com.ajnavi.selenium.google.ui;
+package com.qa.selenium.google.ui;
 
-import com.ajnavi.selenium.annotations.WaitForTitleIs;
-import com.ajnavi.selenium.annotations.WaitToBeVisible;
-import com.ajnavi.selenium.ui.AbstractPage;
-import com.ajnavi.selenium.utils.Browser;
-import com.ajnavi.selenium.utils.Config;
+import com.qa.selenium.annotations.WaitForTitleIs;
+import com.qa.selenium.annotations.WaitToBeVisible;
+import com.qa.selenium.ui.AbstractPage;
+import com.qa.selenium.utils.Browser;
+import com.qa.selenium.utils.Config;
 
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;

@@ -1,4 +1,4 @@
-package com.ajnavi.selenium.annotations;
+package com.qa.selenium.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -6,6 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Retention (RetentionPolicy.RUNTIME)
-@Target (ElementType.FIELD)
-public @interface WaitToBeVisible {
+@Target (ElementType.TYPE)
+public @interface WaitForTitleIs {
+    String title ();
 }

@@ -1,4 +1,4 @@
-package com.ajnavi.selenium.utils;
+package com.qa.selenium.utils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

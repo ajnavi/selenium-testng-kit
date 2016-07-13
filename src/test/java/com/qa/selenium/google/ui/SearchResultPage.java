@@ -1,9 +1,9 @@
-package com.ajnavi.selenium.google.ui;
+package com.qa.selenium.google.ui;
 
 import java.util.List;
 
-import com.ajnavi.selenium.annotations.WaitToBeVisible;
-import com.ajnavi.selenium.ui.AbstractPage;
+import com.qa.selenium.annotations.WaitToBeVisible;
+import com.qa.selenium.ui.AbstractPage;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
