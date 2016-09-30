@@ -5,9 +5,14 @@ import com.qa.selenium.annotations.WaitForTitleContains;
 import com.qa.selenium.annotations.WaitForTitleIs;
 import com.qa.selenium.annotations.WaitToBeVisible;
 import com.qa.selenium.ui.AbstractPage;
+
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.remote.Augmenter;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.FindBy;
@@ -16,9 +21,12 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public final class Browser {
@@ -233,5 +241,22 @@ public final class Browser {
     	logger.debug("Loading URL {}", url);
         // remoteWebDriver.get (url);
         Browser.getDriver().get(url);
+    }
+    
+
+    public static void captureScreenShot(RemoteWebDriver driver, String prefix){
+    	String time = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date(System.currentTimeMillis()));    	
+		String fileName = prefix + "-screenshot-" + time + ".png";
+		
+    	File srcFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+    	
+    	File savedFile = new File(fileName);
+    	try {
+    		// now copy the  screenshot to desired location using copyFile method
+    		FileUtils.copyFile(srcFile, savedFile);
+    		logger.info("Saved screenshot in file " + fileName);
+    	} catch (IOException e)  	{
+    		e.printStackTrace();
+    	}
     }
 }

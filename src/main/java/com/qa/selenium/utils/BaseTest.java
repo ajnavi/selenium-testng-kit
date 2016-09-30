@@ -1,6 +1,7 @@
 package com.qa.selenium.utils;
 
 import org.testng.ITestContext;
+import org.testng.ITestResult;
 import org.testng.annotations.*;
 
 @Listeners({com.qa.selenium.utils.MySuiteListener.class, com.qa.selenium.utils.MyTestListener.class})
@@ -49,9 +50,12 @@ public abstract class BaseTest {
     }
 
     @AfterMethod
-    public void cleanupAfterMethod() {
+    public void cleanupAfterMethod(ITestResult result) {
         long id = Thread.currentThread().getId();
         System.out.println("AfterMethod - Thread id is: " + id);
+        if (! result.isSuccess()) {
+    		Browser.captureScreenShot(Browser.getDriver(), result.getName());
+		}    
         cleanup();
     }
 }

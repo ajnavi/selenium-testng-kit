@@ -42,7 +42,8 @@ public class HomePageTest extends BaseTest {
             e.printStackTrace();
         }*/
         System.out.println("Yahoo Thread is " + Thread.currentThread().getId());
-        Browser.getDriver().getCurrentUrl().contains("yahoo");
+        // this is to test if screen capture function works or not.
+        Assert.assertTrue(Browser.getDriver().getCurrentUrl().contains("yahoo0"));
         // Assert.assertNotNull(Browser.getDriver().findElement(By.id("nav-mail")));
         // Assert.assertNotNull(Browser.getDriver().findElement(By.id("nav-news")));
     }
