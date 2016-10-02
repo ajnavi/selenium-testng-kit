@@ -28,6 +28,9 @@ public class HomePage extends AbstractPage {
     @FindBy (how = How.CLASS_NAME, using = "gb_P")
     private WebElement gmailButton;
 
+    @FindBy (how = How.ID, using = "pnnext")
+    private WebElement nextButton;
+    
     public HomePage () {
         super ();
     }
@@ -51,6 +54,7 @@ public class HomePage extends AbstractPage {
     public SearchResultPage enterSearchTerm (String text) {
     	input.sendKeys(text);
     	input.sendKeys(Keys.RETURN);
+    	Browser.waitForElementToBeVisible(Browser.getDriver(), nextButton);
     	return new SearchResultPage ();
     } 
     

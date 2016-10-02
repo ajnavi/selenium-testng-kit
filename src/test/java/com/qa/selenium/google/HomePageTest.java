@@ -23,16 +23,16 @@ public class HomePageTest extends BaseTest {
         HomePage homePage = HomePage.loadPage();
         Assert.assertEquals(homePage.getGmailText(), "Gmail", "Failed to test text for gmail link"
                 + "Expected was : Gmail, but actual is : " + homePage.getGmailText());
-    }
+    }*/
 
     @Test()
     public void testResultsPage() throws Exception {
         HomePage homePage = HomePage.loadPage();
         SearchResultPage searchPage = homePage.enterSearchTerm("couponcodes");
     }
-    */
+    
 
-    @Test
+   // @Test  /* This test is to test screenshot feature*/
     public void testYahoo() {
        // Browser.load(((String) Config.getInstance().get ("google.url")));
         Browser.load("http://www.yahoo.com");

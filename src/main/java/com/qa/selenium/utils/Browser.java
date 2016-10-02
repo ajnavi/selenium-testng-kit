@@ -10,16 +10,20 @@ import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.TimeoutException;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.remote.Augmenter;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.testng.Assert;
 
 import java.io.File;
 import java.io.IOException;
@@ -259,4 +263,19 @@ public final class Browser {
     		e.printStackTrace();
     	}
     }
-}
+    
+    public static  void waitForElementToBeVisible (RemoteWebDriver driver, final WebElement element) {
+    	WebDriverWait webDriverWait = Browser.getWebDriverWait();
+    	webDriverWait.until(ExpectedConditions.visibilityOf(element));
+     }
+    
+    public static  void waitForElementToBeClickable (RemoteWebDriver driver, final WebElement element) {
+    	WebDriverWait webDriverWait = Browser.getWebDriverWait();
+    	webDriverWait.until(ExpectedConditions.elementToBeClickable(element));
+     }
+   
+ }
+    
+    
+    
+
