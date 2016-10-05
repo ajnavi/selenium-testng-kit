@@ -179,7 +179,7 @@ public final class Browser {
         Config.destroy();
     }
 
-    private static void processWaitToBeVisible (Field field, Object page, WebDriverWait webDriverWait) {
+    private static void processWaitToBeVisible (Field field, Object page, WebDriverWait webDriverWait) throws Exception {
         try {
             field.setAccessible (true);
             Object variable = field.get (page);
@@ -188,9 +188,9 @@ public final class Browser {
                 webDriverWait.until (ExpectedConditions.visibilityOfAllElements ((List<WebElement>) variable));
             else
                 webDriverWait.until (ExpectedConditions.visibilityOf ((WebElement) variable));
-        } catch (Throwable e) {
-            logger.error ("Waiting for element " + field.getName () + " of class " + page.getClass ().getName ());
-            e.printStackTrace ();
+        } catch (Exception e) {
+            logger.error ("Exception while waiting to be visible for element " + field.getName () + " of class " + page.getClass ().getName ());
+            throw e;
         }
     }
 
@@ -207,7 +207,7 @@ public final class Browser {
         return process;
     }
 
-    private static void processWaitFor (Class <?> pageClass, Object page, WebDriverWait webDriverWait) throws Error {
+    private static void processWaitFor (Class <?> pageClass, Object page, WebDriverWait webDriverWait) throws Error, Exception {
         Field[] fields = pageClass.getDeclaredFields ();
         for (Field field: fields) {
             if (processWait (field))
@@ -229,16 +229,20 @@ public final class Browser {
             webDriverWait.until (ExpectedConditions.textToBePresentInElementLocated (By.tagName ("h1"), h1.h1 ()));
     }
 
-    public static void waitFor (Object page) throws Error {
-        WebDriverWait webDriverWait = getWebDriverWait ();
-        Class <?> pageClass = page.getClass ();
+    public static void waitFor (Object page) {
+    	try {
+    		WebDriverWait webDriverWait = getWebDriverWait ();
+    		Class <?> pageClass = page.getClass ();
 
-        processPageWait (pageClass, webDriverWait);
+    		processPageWait (pageClass, webDriverWait);
 
-        while (pageClass != AbstractPage.class) {
-            processWaitFor (pageClass, page, webDriverWait);
-            pageClass = pageClass.getSuperclass ();
-        }
+    		while (pageClass != AbstractPage.class) {
+    			processWaitFor (pageClass, page, webDriverWait);
+    			pageClass = pageClass.getSuperclass ();
+    		}
+    	} catch (Exception e) {
+    		throw new RuntimeException(e);
+    	}
     }
 
     public static void load (String url) {

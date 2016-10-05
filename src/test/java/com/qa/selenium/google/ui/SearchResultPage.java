@@ -17,7 +17,6 @@ public class SearchResultPage extends AbstractPage {
     @FindBy (how = How.CLASS_NAME, using = "gsfi")
     private WebElement input;
     
-    @WaitToBeVisible
     @FindBy (how = How.NAME  , using = "btnK")
     private WebElement searchButton;
     

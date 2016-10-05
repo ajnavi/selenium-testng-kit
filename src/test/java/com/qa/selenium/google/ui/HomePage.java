@@ -20,7 +20,6 @@ public class HomePage extends AbstractPage {
     @FindBy (how = How.CLASS_NAME, using = "gsfi")
     private WebElement input;
     
-    @WaitToBeVisible
     @FindBy (how = How.NAME  , using = "btnK")
     private WebElement searchButton;
     
@@ -30,10 +29,6 @@ public class HomePage extends AbstractPage {
 
     @FindBy (how = How.ID, using = "pnnext")
     private WebElement nextButton;
-    
-    public HomePage () {
-        super ();
-    }
 
     public static HomePage loadPage () {
         Browser.load ((String) Config.getInstance ().get ("mobile.homepage.url"));
