@@ -284,7 +284,7 @@ public final class Browser {
 		try {
 			// now copy the  screenshot to desired location using copyFile method
 			FileUtils.copyFile(srcFile, savedFile);
-			logger.info("Saved screenshot in file " + fileName);
+			logger.info("Saved screenshot in file " + fileName + "f.getAbsolutePath() = " + savedFile.getAbsolutePath());
 		} catch (IOException e)  	{
 			e.printStackTrace();
 		}
@@ -347,6 +347,17 @@ public final class Browser {
 		clickThis.selectByValue(value);
 
 	}
+	
+    public static void waitForTextToBePresentInElementLocated(By findBy, String text) {
+    	WebDriverWait wait = Browser.getWebDriverWait();
+    	wait.until(ExpectedConditions.textToBePresentInElementLocated(findBy, text));
+    }
+    
+    public static List<WebElement> waitToBeClickableAndGet(final By findBy) {
+    	final ExpectedCondition<List<WebElement>> element = ExpectedConditions.presenceOfAllElementsLocatedBy(findBy);
+    	WebDriverWait wait = Browser.getWebDriverWait();
+    	return wait.until(element);
+    }
 
 	public static void clickByJavascript (String cssLocator , WebElement element) {
 		Browser.waitForElementToBePresent(cssLocator);

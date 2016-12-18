@@ -19,7 +19,7 @@ public final class Utility {
 	
 	private static Logger logger = LoggerFactory.getLogger (Utility.class);
 	
-	private static void printRow(final List<WebElement> columns,
+	public static void printRow(final List<WebElement> columns,
 			final FileWriter csvWriter) throws IOException {
 		boolean first = true;
 		for (final WebElement col : columns) {
