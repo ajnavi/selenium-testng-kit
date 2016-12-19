@@ -44,6 +44,9 @@ public abstract class BaseTest {
 */
     @BeforeMethod
     public void initBeforeMethod(ITestContext context) {
+    	String user = System.getProperty("user.name") ;
+    	System.setProperty("webdriver.gecko.driver","C:\\Users\\"+user+"\\tools\\geckodriver-v0.11.1-win64\\geckodriver.exe");
+
         long id = Thread.currentThread().getId();
         System.out.println("BeforeMethod - Thread id is: " + id);
         init(context);
