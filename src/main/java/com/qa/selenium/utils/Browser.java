@@ -55,6 +55,8 @@ public final class Browser {
 			++_refCounter;
 			if (_refCounter == 1) {
 				logger.info ("Initializing driver for thread " + Thread.currentThread().getId());
+				String user = System.getProperty("user.name") ;
+				System.setProperty("webdriver.firefox.marionette","C:\\Users\\"+user+"\\tools\\geckodriver-v0.11.1-win64\\geckodriver.exe");
 				if (Config.getInstance().getBoolean("use.selenium.grid", false)) {
 					// String nodeUrl = "http://10.30.27.73:5555/wd/hub";
 					String nodeUrl = Config.getInstance().get("selenium.grid.url", null);
